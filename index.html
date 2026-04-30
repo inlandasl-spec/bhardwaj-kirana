@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>भर्द्वाज किराना स्टोर</title>
+
+<style>
+body {font-family: Arial; margin:0; background:#f4f7f6;}
+header {background:green; color:white; padding:20px; text-align:center;}
+.price-bar {background:#fff3cd; padding:10px; text-align:center; font-weight:bold;}
+.card {background:white; margin:10px; padding:15px; border-radius:10px;}
+.btn {padding:10px 15px; color:white; border:none; border-radius:5px; text-decoration:none;}
+.whatsapp {background:#25D366;}
+.admin {background:#222; color:white; padding:15px;}
+input {padding:8px; margin:5px; width:90%;}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>🌾 भारद्वाज किराना स्टोर</h1>
+<p>आपकी फसल – सही दाम, तुरंत भुगतान और भरोसे के साथ खरीद</p>
+</header>
+
+<div class="price-bar" id="priceDisplay">
+📊 आज का भाव: Loading...
+</div>
+
+<section class="card">
+<h2>🚜 फसल खरीद सेवा</h2>
+<a id="orderBtn" class="btn whatsapp">📲 WhatsApp ऑर्डर करें</a>
+</section>
+
+<!-- ADMIN -->
+<div class="admin">
+<h2>🔐 Admin Panel</h2>
+
+<input type="password" id="pass" placeholder="Password डालें">
+
+<input type="text" id="chana" placeholder="चना भाव">
+<input type="text" id="sarso" placeholder="सरसों भाव">
+<input type="text" id="gehu" placeholder="गेहूं भाव">
+<input type="text" id="gawar" placeholder="ग्वार भाव">
+
+<br>
+<button onclick="saveData()">💾 Update</button>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
+
+<script>
+
+// 🔥 अपना Firebase Config यहाँ डालो
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DB_URL",
+  projectId: "YOUR_ID",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// LOAD DATA
+db.ref("price").on("value", (snapshot) => {
+    let data = snapshot.val();
+
+    if(data){
+        document.getElementById("priceDisplay").innerHTML =
+        `📊 आज का भाव: चना ₹${data.chana} | सरसों ₹${data.sarso} | गेहूं ₹${data.gehu} | ग्वार ₹${data.gawar}`;
+
+        let msg = `Namaste mujhe fasal bechni hai.%0AChana ₹${data.chana}%0ASarso ₹${data.sarso}%0AGehu ₹${data.gehu}%0AGawar ₹${data.gawar}`;
+        document.getElementById("orderBtn").href =
+        `https://wa.me/917062443431?text=${msg}`;
+    }
+});
+
+// SAVE DATA
+function saveData(){
+
+    let pass = document.getElementById("pass").value;
+
+    if(pass !== "1234"){
+        alert("Wrong Password ❌");
+        return;
+    }
+
+    let chana = document.getElementById("chana").value;
+    let sarso = document.getElementById("sarso").value;
+    let gehu = document.getElementById("gehu").value;
+    let gawar = document.getElementById("gawar").value;
+
+    db.ref("price").set({
+        chana: chana,
+        sarso: sarso,
+        gehu: gehu,
+        gawar: gawar
+    });
+
+    alert("Live Price Updated ✅");
+}
+
+</script>
+
+</body>
+</html>
