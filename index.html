@@ -6,36 +6,139 @@
 <title>भर्द्वाज किराना स्टोर</title>
 
 <style>
-body {font-family: Arial; margin:0; background:#f4f7f6;}
-header {background:green; color:white; padding:20px; text-align:center;}
-.price-bar {background:#fff3cd; padding:10px; text-align:center; font-weight:bold;}
-.card {background:white; margin:10px; padding:15px; border-radius:10px;}
-.btn {padding:10px 15px; color:white; border:none; border-radius:5px; text-decoration:none;}
-.whatsapp {background:#25D366;}
-.admin {background:#222; color:white; padding:15px;}
-input {padding:8px; margin:5px; width:90%;}
-button {padding:10px; margin-top:10px;}
-</style>
+body{
+margin:0;
+font-family:sans-serif;
+background:#f2f5f9;
+}
 
+/* HEADER */
+header{
+background:linear-gradient(45deg,#0f9d58,#2ecc71);
+color:white;
+text-align:center;
+padding:20px;
+border-bottom-left-radius:25px;
+border-bottom-right-radius:25px;
+}
+
+header h1{margin:0;}
+header p{font-size:14px;}
+
+/* PRICE BAR */
+.price-bar{
+background:#fff3cd;
+padding:10px;
+text-align:center;
+font-weight:bold;
+border-radius:10px;
+margin:10px;
+}
+
+/* CARD */
+.card{
+background:white;
+margin:10px;
+padding:15px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* BUTTON */
+.btn{
+display:inline-block;
+padding:10px 15px;
+border-radius:20px;
+text-decoration:none;
+color:white;
+margin-top:10px;
+}
+.whatsapp{background:#25D366;}
+.call{background:#007bff;}
+
+/* IMAGE */
+img{
+width:100%;
+border-radius:15px;
+}
+
+/* ADMIN PANEL */
+.admin{
+background:#111;
+color:white;
+margin:10px;
+padding:15px;
+border-radius:15px;
+}
+.admin input{
+width:100%;
+padding:10px;
+margin:5px 0;
+border-radius:8px;
+border:none;
+}
+.admin button{
+width:100%;
+padding:12px;
+background:#2ecc71;
+color:white;
+border:none;
+border-radius:10px;
+}
+
+/* FLOAT BUTTON */
+.float{
+position:fixed;
+right:20px;
+width:55px;
+height:55px;
+border-radius:50%;
+text-align:center;
+line-height:55px;
+color:white;
+font-size:22px;
+box-shadow:0 2px 10px rgba(0,0,0,0.3);
+}
+.call-float{bottom:90px; background:#007bff;}
+.whatsapp-float{bottom:20px; background:#25D366;}
+
+iframe{border-radius:15px;}
+</style>
 </head>
 
 <body>
 
 <header>
 <h1>🌾 भर्द्वाज किराना स्टोर</h1>
-<p>आपकी फसल – सही दाम, तुरंत भुगतान</p>
+<p>आपकी फसल – सही दाम, तुरंत भुगतान और भरोसे के साथ खरीद</p>
 </header>
 
 <div class="price-bar" id="priceDisplay">
 📊 आज का भाव: Loading...
 </div>
 
-<section class="card">
+<!-- SERVICE -->
+<div class="card">
 <h2>🚜 फसल खरीद सेवा</h2>
-<a id="orderBtn" class="btn whatsapp">📲 WhatsApp ऑर्डर करें</a>
-</section>
+<img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae">
+<a id="orderBtn" class="btn whatsapp">📲 WhatsApp करें</a>
+</div>
 
-<!-- ADMIN PANEL -->
+<!-- LOCATION -->
+<div class="card">
+<h2>📍 हमारी लोकेशन</h2>
+<p>
+भर्द्वाज किराना स्टोर<br>
+Ward No. 3, भुकरका<br>
+नोहर, राजस्थान 335523
+</p>
+
+<iframe 
+src="https://maps.google.com/maps?q=bhukarka%20rajasthan&t=&z=13&ie=UTF8&iwloc=&output=embed"
+width="100%" height="250"></iframe>
+</div>
+
+<!-- ADMIN -->
 <div class="admin">
 <h2>🔐 Admin Panel</h2>
 
@@ -49,60 +152,61 @@ button {padding:10px; margin-top:10px;}
 <button onclick="saveData()">💾 Update</button>
 </div>
 
+<!-- FLOAT BUTTON -->
+<a href="tel:7062443431" class="float call-float">📞</a>
+<a href="https://wa.me/917062443431" class="float whatsapp-float">💬</a>
+
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <script>
 
-// 🔥 यहाँ अपना Firebase config डालना है
 const firebaseConfig = {
-  apiKey: "AIzaSyXXXX",
-  authDomain: "xxxx.firebaseapp.com",
-  databaseURL: "https://xxxx-default-rtdb.firebaseio.com",
-  projectId: "xxxx",
+  apiKey: "PASTE_YOUR_KEY",
+  authDomain: "PASTE_YOUR_DOMAIN",
+  databaseURL: "PASTE_YOUR_DB_URL",
+  projectId: "PASTE_YOUR_ID",
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// LIVE DATA SHOW
 db.ref("price").on("value", (snapshot) => {
-    let data = snapshot.val();
+let data = snapshot.val();
 
-    if(data){
-        document.getElementById("priceDisplay").innerHTML =
-        `📊 आज का भाव: चना ₹${data.chana} | सरसों ₹${data.sarso} | गेहूं ₹${data.gehu} | ग्वार ₹${data.gawar}`;
+if(data){
+document.getElementById("priceDisplay").innerHTML =
+`📊 आज का भाव: चना ₹${data.chana} | सरसों ₹${data.sarso} | गेहूं ₹${data.gehu} | ग्वार ₹${data.gawar}`;
 
-        let msg = `Namaste mujhe fasal bechni hai.%0AChana ₹${data.chana}%0ASarso ₹${data.sarso}%0AGehu ₹${data.gehu}%0AGawar ₹${data.gawar}`;
+let msg = `Namaste mujhe fasal bechni hai.%0AChana ₹${data.chana}%0ASarso ₹${data.sarso}%0AGehu ₹${data.gehu}%0AGawar ₹${data.gawar}`;
 
-        document.getElementById("orderBtn").href =
-        `https://wa.me/917062443431?text=${msg}`;
-    }
+document.getElementById("orderBtn").href =
+`https://wa.me/917062443431?text=${msg}`;
+}
 });
 
-// SAVE DATA
 function saveData(){
-    let pass = document.getElementById("pass").value;
 
-    if(pass !== "1234"){
-        alert("Wrong Password ❌");
-        return;
-    }
+let pass = document.getElementById("pass").value;
+if(pass !== "1234"){
+alert("Wrong Password ❌");
+return;
+}
 
-    let chana = document.getElementById("chana").value;
-    let sarso = document.getElementById("sarso").value;
-    let gehu = document.getElementById("gehu").value;
-    let gawar = document.getElementById("gawar").value;
+let chana = document.getElementById("chana").value;
+let sarso = document.getElementById("sarso").value;
+let gehu = document.getElementById("gehu").value;
+let gawar = document.getElementById("gawar").value;
 
-    db.ref("price").set({
-        chana: chana,
-        sarso: sarso,
-        gehu: gehu,
-        gawar: gawar
-    });
+db.ref("price").set({
+chana: chana,
+sarso: sarso,
+gehu: gehu,
+gawar: gawar
+});
 
-    alert("Live Price Updated ✅");
+alert("Live Price Updated ✅");
 }
 
 </script>
