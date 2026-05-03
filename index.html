@@ -14,6 +14,7 @@ header {background:green; color:white; padding:20px; text-align:center;}
 .whatsapp {background:#25D366;}
 .admin {background:#222; color:white; padding:15px;}
 input {padding:8px; margin:5px; width:90%;}
+button {padding:10px; margin-top:10px;}
 </style>
 
 </head>
@@ -21,8 +22,8 @@ input {padding:8px; margin:5px; width:90%;}
 <body>
 
 <header>
-<h1>🌾 भारद्वाज किराना स्टोर</h1>
-<p>आपकी फसल – सही दाम, तुरंत भुगतान और भरोसे के साथ खरीद</p>
+<h1>🌾 भर्द्वाज किराना स्टोर</h1>
+<p>आपकी फसल – सही दाम, तुरंत भुगतान</p>
 </header>
 
 <div class="price-bar" id="priceDisplay">
@@ -34,39 +35,38 @@ input {padding:8px; margin:5px; width:90%;}
 <a id="orderBtn" class="btn whatsapp">📲 WhatsApp ऑर्डर करें</a>
 </section>
 
-<!-- ADMIN -->
+<!-- ADMIN PANEL -->
 <div class="admin">
 <h2>🔐 Admin Panel</h2>
 
 <input type="password" id="pass" placeholder="Password डालें">
 
-<input type="text" id="chana" placeholder="चना भाव">
-<input type="text" id="sarso" placeholder="सरसों भाव">
-<input type="text" id="gehu" placeholder="गेहूं भाव">
-<input type="text" id="gawar" placeholder="ग्वार भाव">
+<input type="number" id="chana" placeholder="चना भाव">
+<input type="number" id="sarso" placeholder="सरसों भाव">
+<input type="number" id="gehu" placeholder="गेहूं भाव">
+<input type="number" id="gawar" placeholder="ग्वार भाव">
 
-<br>
 <button onclick="saveData()">💾 Update</button>
 </div>
 
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <script>
 
-// 🔥 अपना Firebase Config यहाँ डालो
+// 🔥 यहाँ अपना Firebase config डालना है
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  databaseURL: "YOUR_DB_URL",
-  projectId: "YOUR_ID",
+  apiKey: "PASTE_YOUR_KEY",
+  authDomain: "PASTE_YOUR_DOMAIN",
+  databaseURL: "PASTE_YOUR_DB_URL",
+  projectId: "PASTE_YOUR_ID",
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// LOAD DATA
+// LIVE DATA SHOW
 db.ref("price").on("value", (snapshot) => {
     let data = snapshot.val();
 
@@ -75,6 +75,7 @@ db.ref("price").on("value", (snapshot) => {
         `📊 आज का भाव: चना ₹${data.chana} | सरसों ₹${data.sarso} | गेहूं ₹${data.gehu} | ग्वार ₹${data.gawar}`;
 
         let msg = `Namaste mujhe fasal bechni hai.%0AChana ₹${data.chana}%0ASarso ₹${data.sarso}%0AGehu ₹${data.gehu}%0AGawar ₹${data.gawar}`;
+
         document.getElementById("orderBtn").href =
         `https://wa.me/917062443431?text=${msg}`;
     }
@@ -82,7 +83,6 @@ db.ref("price").on("value", (snapshot) => {
 
 // SAVE DATA
 function saveData(){
-
     let pass = document.getElementById("pass").value;
 
     if(pass !== "1234"){
